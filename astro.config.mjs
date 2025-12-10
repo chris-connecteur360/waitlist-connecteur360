@@ -10,6 +10,7 @@ export default defineConfig({
   server: {
       host: true, // ou '0.0.0.0'
   },
+  site: 'https://waitlist-connecteur360-nine.vercel.app/fr',
   output: 'server',
   adapter: vercel()
 });

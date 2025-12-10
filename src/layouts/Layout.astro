@@ -1,14 +1,72 @@
+---
+import { getLangFromUrl } from '../i18n';
+
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const lang = getLangFromUrl(Astro.url);
+
+// --- Configuration par langue ---
+const metaData = {
+	fr: {
+		title: "Connecteur 360 - Le futur de l'investissement",
+		description: "Une plateforme unique qui connecte vos objectifs de vie aux meilleures opportunités du marché. Rejoignez la waitlist pour transformer votre avenir financier.",
+	},
+	en: {
+		title: "Connecteur 360 - The future of investment",
+		description: "A unified platform connecting your life goals with the market's best opportunities. Join the waitlist to transform your financial future.",
+	}
+};
+
+const currentMeta = metaData[lang];
+
+// Si le titre/desc est passé en props, on l'utilise, sinon on prend le défaut
+const title = Astro.props.title || currentMeta.title;
+const description = Astro.props.description || currentMeta.description;
+
+// URL canonique (très important pour le SEO multilingue)
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+// Image de partage (crée une image de 1200x630px et mets-la dans public/social-image.jpg)
+const socialImageURL = new URL('/social-image.svg', Astro.url);
+---
+
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="stylesheet" href="/src/styles/global.css">
+		<link rel="icon" type="image/svg+xml" href="/logos/logo.svg" />
+		
+		<title>{title}</title>
+		<meta name="description" content={description} />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body class="bg-[#F9F9FB] px-[16px] pt-8 font-urbanist font-medium">
+		<link rel="canonical" href={canonicalURL} />
+		
+		<link rel="alternate" hreflang="fr" href={`${Astro.url.origin}/fr`} />
+		<link rel="alternate" hreflang="en" href={`${Astro.url.origin}/en`} />
+		<link rel="alternate" hreflang="x-default" href={`${Astro.url.origin}/fr`} />
+
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={Astro.url} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={socialImageURL} />
+
+		<meta property="twitter:card" content="summary_large_image" />
+		<meta property="twitter:url" content={Astro.url} />
+		<meta property="twitter:title" content={title} />
+		<meta property="twitter:description" content={description} />
+		<meta property="twitter:image" content={socialImageURL} />
+
+		<link rel="stylesheet" href="/src/styles/global.css">
+        
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        </head>
+	<body class="bg-[#F9F9FB] px-[16px] pt-8 font-urbanist font-medium min-h-screen flex flex-col">
 		<slot />
 	</body>
 </html>
