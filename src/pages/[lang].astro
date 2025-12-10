@@ -1,0 +1,70 @@
+---
+// src/pages/[lang].astro
+import Layout from '../layouts/Layout.astro';
+import { languages, getLangFromUrl, useTranslations } from '../i18n';
+import "../styles/global.css";
+
+export function getStaticPaths() {
+  return Object.keys(languages).map((lang) => ({
+    params: { lang },
+  }));
+}
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const otherLang = lang === 'fr' ? 'en' : 'fr';
+---
+
+<Layout>
+    <div class="bg-[#F9F9FB] min-h-screen flex flex-col">
+        
+        <main class="flex-grow flex items-center justify-center w-full py-10">
+            
+            <div class="max-sm:w-[90%] sm:max-w-[480px] w-full p-8 bg-white space-y-7 rounded-[16px] shadow-card">
+                <div class="flex items-center justify-center">
+                    <img src="/logos/logo.svg" alt="Connecteur 360 Logo" class="h-12">
+                </div>
+                
+                <div class="w-full space-y-2 text-[#0D0D12]">
+                    <h1 class="text-[22px] leading-[130%] font-bold mb-4">{t('hero.title')}</h1>
+                    
+                    {/* Bloc de texte principal avec rendu HTML pour les sauts de ligne */}
+                    <p class="text-[15px] leading-relaxed" set:html={t('hero.intro')} />
+                    
+                    {/* Première liste à puces */}
+                    <div class="text-[15px] leading-relaxed" set:html={t('hero.features')} />
+
+                    {/* Transition */}
+                    <p class="text-[15px] font-medium mt-4" set:html={t('hero.impact_intro')} />
+
+                    {/* Deuxième liste à puces */}
+                    <div class="text-[15px] leading-relaxed" set:html={t('hero.impact_list')} />
+                    
+                    {/* Phrase de fin */}
+                    <p class="text-[15px] italic mt-4 text-gray-600" set:html={t('hero.outro')} />
+
+                </div>
+
+                <form class="space-y-[14px]">
+                    <input 
+                        type="email" 
+                        required
+                        placeholder={t('form.email.placeholder')} 
+                        class="text-[14px] px-3 border border-[#E5E7EB] w-full py-[10px] rounded-[8px] focus:outline-none focus:ring-2 focus:ring-[#0052CC]"
+                    >
+                    <button type="submit" class="text-center text-[14px] font-medium text-white w-full bg-[#0052CC] hover:bg-[#0043a8] transition-colors py-[10px] rounded-[8px]">
+                        {t('form.submit')}
+                    </button>
+                </form>
+            </div>
+        </main>
+
+        <footer class="py-[18px] flex items-center justify-between gap-6 w-full">
+            <p class="text-[14px] text-gray-500">{t('footer.copyright')}</p>
+            <a href={`/${otherLang}`} class="text-[14px]  text-gray-500 hover:underline cursor-pointer">
+                {otherLang === 'fr' ? 'FR' : 'EN'}
+            </a>
+        </footer>
+    </div>
+</Layout>

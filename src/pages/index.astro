@@ -1,0 +1,47 @@
+---
+import Welcome from '../components/Welcome.astro';
+import Layout from '../layouts/Layout.astro';
+import "../styles/global.css";
+
+import { defaultLang } from '../i18n';
+---
+<script>
+  // Détection de la langue du navigateur
+  const browserLang = navigator.language.split('-')[0]; // 'fr-FR' -> 'fr'
+  const supportedLangs = ['fr', 'en'];
+  
+  // Utiliser la langue du navigateur si supportée, sinon la langue par défaut
+  const lang = supportedLangs.includes(browserLang) ? browserLang : 'fr';
+  
+  window.location.href = `/${lang}`;
+</script>
+
+// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
+// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+---
+
+<Layout>
+	<div class="bg-[#F9F9FB]">
+		
+		<main class="h-[calc(100vh-50px)] flex items-center justify-center w-full py-8">
+			
+			<div class="max-sm:w-[400px] sm:max-w-[380px] w-full p-8 bg-white space-y-7 rounded-[16px] shadow-card">
+				<div class="flex items-center justify-center">
+					<img src="/logos/logo.svg" alt="">
+				</div>
+				<div class="w-full space-y-2">
+					<h1 class="text-[20px] text-[#0D0D12] leading-[130%] font-nanamiBook">Le futur de l'investissement</h1>
+					<p class="text-black text-[15px]">Connecteur inc 360 est un projet communautaire visant a mieux gerer les patrimoine en investissant sur de reels projets qui ont de le l’impact tout ceci en toute tracabilite et avec un retour sur investissement garantie. <br/> <br/>Pour le moment le projet est en phase de developement et sera disponible a la fin premier trimestre de 2026. Rejoignez la waitlist pour rester informer par rapport aux avancements du projet.</p>
+				</div>
+				<div class="space-y-[14px]">
+					<input type="text" placeholder="Email..." class="text-[14px] px-3 border border-[#] w-full py-[10px] rounded-[8px]">
+					<button class=" text-center text-[14px] text-white max-w-[386px] w-full bg-[#0052CC] py-[10px] rounded-[8px]">Rejoindre la waitlist</button>
+				</div>
+			</div>
+		</main>
+		<footer class=" py-[18px] flex items-center justify-between w-full">
+			<p class="text-[14px]">© 2025 Connecteur inc 360. </p>
+			<a class="text-[14px]">FR</a>
+		</footer>
+	</div>
+</Layout>
