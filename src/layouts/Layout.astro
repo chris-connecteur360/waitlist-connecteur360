@@ -1,4 +1,5 @@
 ---
+// src/layouts/Layout.astro
 import { getLangFromUrl } from '../i18n';
 
 interface Props {
@@ -9,6 +10,7 @@ interface Props {
 const lang = getLangFromUrl(Astro.url);
 
 // --- Configuration par langue ---
+// AJOUT DE LA CLÉ "es" ICI
 const metaData = {
 	fr: {
 		title: "Connecteur 360 - Le futur de l'investissement",
@@ -17,7 +19,11 @@ const metaData = {
 	en: {
 		title: "Connecteur 360 - The future of investment",
 		description: "A unified platform connecting your life goals with the market's best opportunities. Join the waitlist to transform your financial future.",
-	}
+	},
+    es: {
+        title: "Connecteur 360 - El futuro de la inversión",
+        description: "Una plataforma unificada que conecta sus objetivos de vida con las mejores oportunidades del mercado. Únase a la lista de espera para transformar su futuro financiero.",
+    }
 };
 
 const currentMeta = metaData[lang];
@@ -29,7 +35,7 @@ const description = Astro.props.description || currentMeta.description;
 // URL canonique (très important pour le SEO multilingue)
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-// Image de partage (crée une image de 1200x630px et mets-la dans public/social-image.jpg)
+// Image de partage
 const socialImageURL = new URL('/social-image.svg', Astro.url);
 ---
 
@@ -45,8 +51,10 @@ const socialImageURL = new URL('/social-image.svg', Astro.url);
 		<meta name="generator" content={Astro.generator} />
 		<link rel="canonical" href={canonicalURL} />
 		
+        {/* Ajout du lien alternate pour l'espagnol */}
 		<link rel="alternate" hreflang="fr" href={`${Astro.url.origin}/fr`} />
 		<link rel="alternate" hreflang="en" href={`${Astro.url.origin}/en`} />
+        <link rel="alternate" hreflang="es" href={`${Astro.url.origin}/es`} />
 		<link rel="alternate" hreflang="x-default" href={`${Astro.url.origin}/fr`} />
 
 		<meta property="og:type" content="website" />
@@ -65,7 +73,9 @@ const socialImageURL = new URL('/social-image.svg', Astro.url);
         
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        </head>
+        
+        <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700&display=swap" rel="stylesheet">
+	</head>
 	<body class="bg-[#F9F9FB] px-[16px] pt-8 font-urbanist font-medium min-h-screen flex flex-col">
 		<slot />
 	</body>

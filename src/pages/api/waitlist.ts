@@ -1,12 +1,15 @@
-export const prerender = false;
-
 import type { APIRoute } from "astro";
 import { supabase } from "../../lib/supabase";
 
 export const POST: APIRoute = async ({ request }) => {
   try {
     const data = await request.formData();
+    
+    // Récupération des champs
     const email = data.get("email")?.toString();
+    const nom = data.get("nom")?.toString();
+    const prenom = data.get("prenom")?.toString();
+    const pays = data.get("pays")?.toString();
 
     // 1. Validation basique
     if (!email || !email.includes("@")) {
@@ -15,14 +18,28 @@ export const POST: APIRoute = async ({ request }) => {
         { status: 400 }
       );
     }
+    
+    // Validation optionnelle pour les autres champs
+    if (!nom || !prenom || !pays) {
+         return new Response(
+        JSON.stringify({ message: "Veuillez remplir tous les champs." }),
+        { status: 400 }
+      );
+    }
 
     // 2. Envoi vers Supabase
+    // On insère l'objet complet
     const { error } = await supabase
       .from("waitlist")
-      .insert({ email });
+      .insert({ 
+          email, 
+          nom, 
+          prenom, 
+          pays 
+      });
 
     if (error) {
-      // Si l'email existe déjà (code 23505 est souvent utilisé pour 'unique violation')
+      // Si l'email existe déjà
       if (error.code === '23505') {
          return new Response(
           JSON.stringify({ message: "Cet email est déjà inscrit !" }),
